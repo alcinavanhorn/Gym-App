@@ -26,7 +26,7 @@ class Traininglist extends Component {
 		})
 	}
 	
-	//Update training
+	//Update training (only duration and activity are updateable)
 	updateTraining(training, link) {
 		fetch(link, 
 		{	method: 'PUT', 
@@ -67,7 +67,8 @@ class Traininglist extends Component {
     })
 	}
 	
-	//Create new training
+	//Create new training. Adds it to the API, but page has to be refreshed after submitting for the new training to show up. 
+	//Uses the same method as creating a new customer, which works better, so problem unclear
 	addTraining(training) {
 		fetch('https://customerrest.herokuapp.com/api/trainings/',
 		{	method: 'POST',
@@ -80,6 +81,7 @@ class Traininglist extends Component {
 		.catch(err => console.error(err))
 	}
 	
+	//Makes the ReactTable cells editable
 	renderEditable = (cellInfo) => {
 		return (
 			<div
@@ -100,7 +102,7 @@ class Traininglist extends Component {
 	
 	render() {
 		return (
-		<div className="App-body">
+		<div id="trainings">
 			<div className="row">
 				<AddTraining addTraining={this.addTraining} loadTraining={this.loadTraining} />
 			</div>
@@ -155,7 +157,8 @@ class Traininglist extends Component {
 			}
 		]}
 		filterable
-		className="-highlight" >
+		className="-highlight"
+		>
 		</ReactTable>
 		<ToastContainer autoClose={2000} />
 	</div>

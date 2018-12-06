@@ -43,21 +43,21 @@ class Customerlist extends Component {
 	}
 	
 	//Delete customer
-	onDelClick = (idLink) => {
+	onDelete = (idLink) => {
 		confirmAlert({
 			title: '',
 			message: 'Do you want to delete this customer?',
 			buttons: [
 			{
-			label: 'Ok',
-			onClick:() => {
-            fetch(idLink, {method: 'DELETE'})
-			.then(res => this.loadCustomers())
-			.catch(err => console.error(err))
+				label: 'Ok',
+				onClick:() => {
+				fetch(idLink, {method: 'DELETE'})
+				.then(res => this.loadCustomers())
+				.catch(err => console.error(err))
 
-			toast.warn("Successfully deleted", {
-				position: toast.POSITION.BOTTOM_LEFT
-          });
+				toast.warn("Successfully deleted", {
+					position: toast.POSITION.BOTTOM_LEFT
+			  });
           }},
         {
           label: 'Cancel',
@@ -79,27 +79,28 @@ class Customerlist extends Component {
 		.catch(err => console.error(err))
 	}
 	
-  renderEditable = (cellInfo) => {
-    return (
-	<div
-        style={{ backgroundColor: "#fafafa" }}
-        contentEditable
-        suppressContentEditableWarning
-        onBlur={e => {
-			const data = [...this.state.customers];
-			data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-			this.setState({ customers: data });
-        }}
-        dangerouslySetInnerHTML={{
-			__html: this.state.customers[cellInfo.index][cellInfo.column.id]
-        }}                
-		/>
-	);
+	//Makes the ReactTable cells editable
+	renderEditable = (cellInfo) => {
+		return (
+			<div
+				style={{ backgroundColor: "#fafafa" }}
+				contentEditable
+				suppressContentEditableWarning
+				onBlur={e => {
+					const data = [...this.state.customers];
+					data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+					this.setState({ customers: data });
+				}}
+				dangerouslySetInnerHTML={{
+					__html: this.state.customers[cellInfo.index][cellInfo.column.id]
+				}}                
+			/>
+		);
 	}
 	
 	render() {
 		return (
-		<div className="App-body">
+		<div id="customers">
 			<div className="row">
 				<AddCustomer addCustomer={this.addCustomer} loadCustomers={this.loadCustomers} />
 			</div>
@@ -109,8 +110,9 @@ class Customerlist extends Component {
 			{
 				columns: [
 				{
+					Header: "Customer Reference Link",
 					accessor: "links[0].href",
-					show: false
+					show: true
 				},
 				{
 					Header: "First name", 
@@ -161,13 +163,14 @@ class Customerlist extends Component {
                   filterable: false,
                   width: 100,
                   accessor: 'links[0].href',
-                  Cell: ({value}) => (<button className="btn btn-default btn-link" onClick={()=>{this.onDelClick(value)}}>Delete</button>)
-                }              
+                  Cell: ({value}) => (<button className="btn btn-default" onClick={()=>{this.onDelete(value)}}>Delete</button>)
+				}	      
 			]
 		}
 		]}
 		filterable
-		className="-highlight" >
+		className="-highlight" 
+		>
 		</ReactTable>
 		<ToastContainer autoClose={2000} />
 	</div>

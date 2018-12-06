@@ -7,12 +7,14 @@ class AddCustomer extends React.Component {
 		this.state = {firstname: '', lastname: '', streetaddress: '', postcode: '', city: '', email: '', phone: ''};
 	}
 	
+	//Manages changes in the input field
 	handleChange = (event) => {
       this.setState(
           {[event.target.name]: event.target.value}
       );
-  }    
+	}    
   
+  	//Manages the user inputted data to create a new customer
 	handleSubmit = (event) => {
 		event.preventDefault();
 		var newCustomer = {firstname: this.state.firstname, lastname: this.state.lastname, streetaddress: this.state.streetaddress, postcode: this.state.postcode, city: this.state.city, email: this.state.email, phone: this.state.phone};
@@ -22,14 +24,16 @@ class AddCustomer extends React.Component {
 		
 	}
 	
+	//Sets up the dialog box for Skylight to use
 	render() {
 		const addCustomerDialog = {
 			width: '70%',
-			height: '450px', 
+			height: '65%', 
 			marginTop: '-300px',
 			marginLeft: '-35%',
 		};
 		
+	//Shows the Skylight dialog box and form
 	return (
 		<div>
 			<SkyLight dialogStyles={addCustomerDialog} hideOnOverlayClicked ref="simpleDialog">
